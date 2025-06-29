@@ -1,0 +1,88 @@
+{% extends 'voting/base.html' %}
+
+{% block title %}Add Candidate{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Add Candidate</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label for="first_name">First Name</label>
+            <input type="text" class="form-control" id="first_name" name="first_name" required>
+        </div>
+        <div class="form-group">
+            <label for="last_name">Last Name</label>
+            <input type="text" class="form-control" id="last_name" name="last_name" required>
+        </div>
+        <div class="form-group">
+            <label for="position">Position</label>
+            <select class="form-control" id="position" name="position" required>
+                {% for position in positions %}
+                    <option value="{{ position.id }}">{{ position.get_name_display }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="party">Party</label>
+            <select class="form-control" id="party" name="party" required>
+                {% for party in parties %}
+                    <option value="{{ party.id }}">{{ party.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="county">County</label>
+            <select class="form-control" id="county" name="county">
+                <option value="">Select County</option>
+                {% for county in counties %}
+                    <option value="{{ county.id }}">{{ county.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="constituency">Constituency</label>
+            <select class="form-control" id="constituency" name="constituency">
+                <option value="">Select Constituency</option>
+                {% for constituency in constituencies %}
+                    <option value="{{ constituency.id }}">{{ constituency.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="ward">Ward</label>
+            <select class="form-control" id="ward" name="ward">
+                <option value="">Select Ward</option>
+                {% for ward in wards %}
+                    <option value="{{ ward.id }}">{{ ward.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="photo">Photo URL</label>
+            <input type="text" class="form-control" id="photo" name="photo">
+        </div>
+        <div class="form-group">
+            <label for="bio">Bio</label>
+            <textarea class="form-control" id="bio" name="bio" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="manifesto">Manifesto</label>
+            <textarea class="form-control" id="manifesto" name="manifesto" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Candidate</button>
+    </form>
+</div>
+{% endblock %} 

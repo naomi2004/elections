@@ -1,0 +1,177 @@
+{% extends 'voting/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Voter Registration</h2>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="first_name" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="last_name" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_number" class="form-label">ID Number</label>
+                            <input type="text" class="form-control" id="id_number" name="id_number" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="phone_number" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone_number" name="phone_number" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+
+                        <h4 class="mt-4 mb-3">Location Information (Optional)</h4>
+                        
+                        <div class="mb-3">
+                            <label for="county" class="form-label">County</label>
+                            <select class="form-select" id="county" name="county">
+                                <option value="">Select County</option>
+                                {% for county in counties %}
+                                    <option value="{{ county.id }}">{{ county.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="constituency" class="form-label">Constituency</label>
+                            <select class="form-select" id="constituency" name="constituency">
+                                <option value="">Select Constituency</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="ward" class="form-label">Ward</label>
+                            <select class="form-select" id="ward" name="ward">
+                                <option value="">Select Ward</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="polling_center" class="form-label">Polling Center</label>
+                            <select class="form-select" id="polling_center" name="polling_center">
+                                <option value="">Select Polling Center</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="polling_station" class="form-label">Polling Station</label>
+                            <select class="form-select" id="polling_station" name="polling_station">
+                                <option value="">Select Polling Station</option>
+                            </select>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </div>
+                    </form>
+
+                    <div class="text-center mt-3">
+                        <p>Already have an account? <a href="{% url 'voting:login' %}">Login here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    // Add JavaScript for dependent dropdowns
+    document.getElementById('county').addEventListener('change', function() {
+        const countyId = this.value;
+        if (countyId) {
+            fetch(`/load-constituencies/?county=${countyId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const constituencySelect = document.getElementById('constituency');
+                    constituencySelect.innerHTML = '<option value="">Select Constituency</option>';
+                    data.forEach(item => {
+                        constituencySelect.innerHTML += `<option value="${item.id}">${item.name}</option>`;
+                    });
+                });
+        }
+    });
+
+    document.getElementById('constituency').addEventListener('change', function() {
+        const constituencyId = this.value;
+        if (constituencyId) {
+            fetch(`/load-wards/?constituency=${constituencyId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const wardSelect = document.getElementById('ward');
+                    wardSelect.innerHTML = '<option value="">Select Ward</option>';
+                    data.forEach(item => {
+                        wardSelect.innerHTML += `<option value="${item.id}">${item.name}</option>`;
+                    });
+                });
+        }
+    });
+
+    document.getElementById('ward').addEventListener('change', function() {
+        const wardId = this.value;
+        if (wardId) {
+            fetch(`/load-polling-centers/?ward=${wardId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const centerSelect = document.getElementById('polling_center');
+                    centerSelect.innerHTML = '<option value="">Select Polling Center</option>';
+                    data.forEach(item => {
+                        centerSelect.innerHTML += `<option value="${item.id}">${item.name}</option>`;
+                    });
+                });
+        }
+    });
+
+    document.getElementById('polling_center').addEventListener('change', function() {
+        const centerId = this.value;
+        if (centerId) {
+            fetch(`/load-polling-stations/?center=${centerId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const stationSelect = document.getElementById('polling_station');
+                    stationSelect.innerHTML = '<option value="">Select Polling Station</option>';
+                    data.forEach(item => {
+                        stationSelect.innerHTML += `<option value="${item.id}">${item.name}</option>`;
+                    });
+                });
+        }
+    });
+</script>
+{% endblock %}
+{% endblock %} 

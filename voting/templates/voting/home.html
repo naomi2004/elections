@@ -1,0 +1,58 @@
+{% extends 'voting/base.html' %}
+
+{% block title %}Welcome to Kenya Online Voting System{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="display-4 mb-4">Welcome to Kenya Online Voting System</h1>
+            <p class="lead mb-5">A secure and convenient way to cast your vote</p>
+            
+            {% if user.is_authenticated %}
+                {% if user.is_staff %}
+                    <a href="{% url 'voting:admin_dashboard' %}" class="btn btn-primary btn-lg me-3">Admin Dashboard</a>
+                {% else %}
+                    <a href="{% url 'voting:dashboard' %}" class="btn btn-primary btn-lg me-3">Go to Dashboard</a>
+                {% endif %}
+                <a href="{% url 'voting:profile' %}" class="btn btn-outline-primary btn-lg">View Profile</a>
+            {% else %}
+                <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                    <a href="{% url 'voting:login' %}" class="btn btn-primary btn-lg px-4 gap-3">Login</a>
+                    <a href="{% url 'voting:register' %}" class="btn btn-outline-primary btn-lg px-4">Register</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-shield-alt fa-3x mb-3 text-primary"></i>
+                    <h3 class="card-title">Secure Voting</h3>
+                    <p class="card-text">Your vote is protected with advanced security measures and encryption.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-mobile-alt fa-3x mb-3 text-primary"></i>
+                    <h3 class="card-title">Easy Access</h3>
+                    <p class="card-text">Vote from anywhere using your computer or mobile device.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-bar fa-3x mb-3 text-primary"></i>
+                    <h3 class="card-title">Real-time Results</h3>
+                    <p class="card-text">View election results as they come in, in real-time.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

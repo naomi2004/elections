@@ -1,0 +1,54 @@
+{% extends 'voting/base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Election Statistics</h2>
+    <p class="text-muted">Last updated: {{ last_updated|date:'Y-m-d H:i:s' }}</p>
+    {% for stat in stats %}
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">{{ stat.position.get_name_display }}</h4>
+            </div>
+            <div class="card-body">
+                {% if stat.candidates %}
+                    <h5>Leading Candidate:</h5>
+                    <div class="mb-3">
+                        <strong>{{ stat.candidates.0.candidate.user.get_full_name }}</strong>
+                        {% if stat.candidates.0.candidate.party %}
+                            ({{ stat.candidates.0.candidate.party.abbreviation }})
+                        {% endif %}
+                        - <span class="badge bg-success">{{ stat.candidates.0.votes }} votes</span>
+                        <span class="text-muted">({{ stat.candidates.0.percentage|floatformat:2 }}%)</span>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Candidate</th>
+                                <th>Party</th>
+                                <th>Votes</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for c in stat.candidates %}
+                                <tr {% if forloop.first %}class="table-success"{% endif %}>
+                                    <td>{{ c.candidate.user.get_full_name }}</td>
+                                    <td>
+                                        {% if c.candidate.party.logo %}
+                                            <img src="{{ c.candidate.party.logo.url }}" alt="{{ c.candidate.party.name }}" style="width: 20px; height: 20px; object-fit: contain;" class="me-2">
+                                        {% endif %}
+                                        {{ c.candidate.party.abbreviation }}
+                                    </td>
+                                    <td>{{ c.votes }}</td>
+                                    <td>{{ c.percentage|floatformat:2 }}%</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No candidates for this position.</p>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %} 

@@ -1,0 +1,48 @@
+{% extends 'voting/base.html' %}
+
+{% block title %}Confirm Vote{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h3 class="mb-0">Confirm Your Vote</h3>
+                </div>
+                <div class="card-body">
+                    {% if candidate.photo %}
+                        <div class="text-center mb-4">
+                            <img src="{{ candidate.photo }}" alt="{{ candidate.user.get_full_name }}" 
+                                 class="img-fluid rounded" style="max-height: 200px;">
+                        </div>
+                    {% endif %}
+                    <div class="alert alert-warning">
+                        <h4 class="alert-heading">Please Review Your Choice</h4>
+                        <p>You are about to vote for:</p>
+                        <hr>
+                        <p class="mb-0">
+                            <strong>Name:</strong> {{ candidate.user.get_full_name }}<br>
+                            <strong>Position:</strong> {{ candidate.position.get_name_display }}<br>
+                            <strong>Party:</strong> {{ candidate.party.name }}
+                        </p>
+                    </div>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        This action cannot be undone. Please make sure this is your final choice.
+                    </div>
+                    <form method="post" class="text-center">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success btn-lg me-2">
+                            <i class="fas fa-check-circle"></i> Confirm Vote
+                        </button>
+                        <a href="{% url 'voting:vote' candidate.position.name %}" class="btn btn-secondary btn-lg">
+                            <i class="fas fa-times-circle"></i> Cancel
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

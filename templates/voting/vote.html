@@ -1,0 +1,52 @@
+{% extends 'voting/base.html' %}
+
+{% block title %}Vote - {{ position.get_name_display }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Vote for {{ position.get_name_display }}</h3>
+                </div>
+                <div class="card-body">
+                    {% if candidates %}
+                        <div class="row">
+                            {% for candidate in candidates %}
+                                <div class="col-md-4 mb-4">
+                                    <div class="card h-100">
+                                        <img src="{{ candidate.photo.url }}" class="card-img-top" alt="{{ candidate.first_name }} {{ candidate.last_name }}" style="height: 200px; object-fit: cover;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ candidate.first_name }} {{ candidate.last_name }}</h5>
+                                            <p class="card-text">
+                                                <strong>Party:</strong> {{ candidate.party.name }}<br>
+                                                {% if position.name == 'GOVERNOR' or position.name == 'SENATOR' or position.name == 'WOMEN_REP' %}
+                                                    <strong>County:</strong> {{ candidate.county.name }}<br>
+                                                {% elif position.name == 'MP' %}
+                                                    <strong>Constituency:</strong> {{ candidate.constituency.name }}<br>
+                                                {% elif position.name == 'MCA' %}
+                                                    <strong>Ward:</strong> {{ candidate.ward.name }}<br>
+                                                {% endif %}
+                                            </p>
+                                            <div class="text-center">
+                                                <a href="{% url 'voting:confirm_vote' candidate.id position.name %}" class="btn btn-primary">
+                                                    Vote for {{ candidate.first_name }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            No candidates found for this position in your area.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

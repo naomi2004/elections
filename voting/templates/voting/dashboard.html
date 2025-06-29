@@ -1,0 +1,125 @@
+{% extends 'voting/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Voter Information</h4>
+                </div>
+                <div class="card-body">
+                    <p><strong>Name:</strong> {{ voter.user.first_name }} {{ voter.user.last_name }}</p>
+                    <p><strong>ID Number:</strong> {{ voter.id_number }}</p>
+                    <p><strong>County:</strong> {{ voter.county.name|default:"Not specified" }}</p>
+                    <p><strong>Constituency:</strong> {{ voter.constituency.name|default:"Not specified" }}</p>
+                    <p><strong>Ward:</strong> {{ voter.ward.name|default:"Not specified" }}</p>
+                    <p><strong>Polling Center:</strong> {{ voter.polling_center.name|default:"Not specified" }}</p>
+                    <p><strong>Polling Station:</strong> {{ voter.polling_station.name|default:"Not specified" }}</p>
+                    <a href="{% url 'voting:profile' %}" class="btn btn-primary">View Full Profile</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Available Positions</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Position</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for position in positions %}
+                                    <tr>
+                                        <td>{{ position.get_name_display }}</td>
+                                        <td>
+                                            {% if position in voted_positions %}
+                                                <span class="badge bg-success">Voted</span>
+                                            {% else %}
+                                                <span class="badge bg-warning text-dark">Not Voted</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if position in voted_positions %}
+                                                <button class="btn btn-secondary" disabled>Already Voted</button>
+                                            {% else %}
+                                                <a href="{% url 'voting:vote' position.name %}" class="btn btn-primary">
+                                                    Vote Now
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="3" class="text-center">No positions available for voting.</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Recent Votes</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Position</th>
+                                    <th>Candidate</th>
+                                    <th>Party</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for vote in voter.vote_set.all|slice:":5" %}
+                                    <tr>
+                                        <td>{{ vote.position.get_name_display }}</td>
+                                        <td>
+                                            {% if vote.candidate.photo %}
+                                                <img src="{{ vote.candidate.photo }}" 
+                                                     alt="{{ vote.candidate.user.get_full_name }}"
+                                                     class="rounded-circle me-2"
+                                                     style="width: 30px; height: 30px; object-fit: cover;">
+                                            {% endif %}
+                                            {{ vote.candidate.user.get_full_name }}
+                                        </td>
+                                        <td>
+                                            {% if vote.candidate.party.logo %}
+                                                <img src="{{ vote.candidate.party.logo }}"
+                                                     alt="{{ vote.candidate.party.name }}"
+                                                     class="me-2"
+                                                     style="width: 20px; height: 20px; object-fit: contain;">
+                                            {% endif %}
+                                            {{ vote.candidate.party.name }}
+                                        </td>
+                                        <td>{{ vote.timestamp|date:"F d, Y H:i:s" }}</td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="4" class="text-center">No votes cast yet.</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

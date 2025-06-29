@@ -1,0 +1,84 @@
+{% extends 'voting/base.html' %}
+
+{% block title %}Results - {{ election.title }} - Election System{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-12 mb-4">
+            <h2>{{ election.title }} - Results</h2>
+            <p class="text-muted">{{ election.description }}</p>
+        </div>
+    </div>
+
+    {% for position in positions %}
+        <div class="card shadow mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">{{ position.title }}</h5>
+            </div>
+            <div class="card-body">
+                {% if position.description %}
+                    <p class="card-text">{{ position.description }}</p>
+                {% endif %}
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Candidate</th>
+                                <th>Party</th>
+                                <th>Votes</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for result in position.results %}
+                                <tr {% if result.is_winner %}class="table-success"{% endif %}>
+                                    <td>
+                                        {% if result.candidate.photo %}
+                                            <img src="{{ result.candidate.photo }}" alt="{{ result.candidate.user.get_full_name }}" 
+                                                 class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                                        {% endif %}
+                                        {{ result.candidate.user.get_full_name }}
+                                    </td>
+                                    <td>
+                                        {% if result.candidate.party %}
+                                            {{ result.candidate.party.name }}
+                                        {% else %}
+                                            Independent
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ result.votes }}</td>
+                                    <td>
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar {% if result.is_winner %}bg-success{% else %}bg-primary{% endif %}" 
+                                                 role="progressbar" style="width: {{ result.percentage }}%;" 
+                                                 aria-valuenow="{{ result.percentage }}" aria-valuemin="0" aria-valuemax="100">
+                                                {{ result.percentage }}%
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr class="table-light">
+                                <td colspan="2"><strong>Total Votes</strong></td>
+                                <td colspan="2"><strong>{{ position.total_votes }}</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="d-grid gap-2">
+                <a href="{% url 'voting:dashboard' %}" class="btn btn-outline-primary">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

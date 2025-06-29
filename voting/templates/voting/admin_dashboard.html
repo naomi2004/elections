@@ -1,0 +1,124 @@
+{% extends 'voting/base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">Admin Dashboard</h1>
+    
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Voters</h5>
+                    <h2 class="card-text">{{ total_voters }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Votes Cast</h5>
+                    <h2 class="card-text">{{ total_votes }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Candidates</h5>
+                    <h2 class="card-text">{{ total_candidates }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Position Statistics -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Votes by Position</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Position</th>
+                            <th>Total Votes</th>
+                            <th>Candidates</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stat in position_stats %}
+                        <tr>
+                            <td>{{ stat.get_name_display }}</td>
+                            <td>{{ stat.total_votes }}</td>
+                            <td>{{ stat.total_candidates }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Votes -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Recent Votes</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Voter</th>
+                            <th>Position</th>
+                            <th>Candidate</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for vote in recent_votes %}
+                        <tr>
+                            <td>{{ vote.voter.user.get_full_name }}</td>
+                            <td>{{ vote.position.get_name_display }}</td>
+                            <td>{{ vote.candidate.user.get_full_name }}</td>
+                            <td>{{ vote.timestamp|date:"M d, Y H:i" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Trend -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Registration Trend</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>New Registrations</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for trend in registration_trend %}
+                        <tr>
+                            <td>{{ trend.date|date:"M d, Y" }}</td>
+                            <td>{{ trend.count }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
