@@ -19,7 +19,6 @@
                     
                     <form method="post">
                         {% csrf_token %}
-                        
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="first_name" class="form-label">First Name</label>
@@ -30,72 +29,74 @@
                                 <input type="text" class="form-control" id="last_name" name="last_name" required>
                             </div>
                         </div>
-
-                        <div class="mb-3">
-                            <label for="id_number" class="form-label">ID Number</label>
-                            <input type="text" class="form-control" id="id_number" name="id_number" required>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="id_number" class="form-label">ID Number</label>
+                                <input type="text" class="form-control" id="id_number" name="id_number" required pattern="\\d{8}" maxlength="8" minlength="8" title="Enter exactly 8 digits (numbers only)">
+                                <div class="form-text">Enter your 8-digit Kenyan National ID number (numbers only).</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone_number" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone_number" name="phone_number" required pattern="\+2547\\d{8}" maxlength="13" minlength="13" title="Format: +2547XXXXXXXX">
+                                <div class="form-text">Format: +2547XXXXXXXX (e.g., +254712345678)</div>
+                            </div>
                         </div>
-
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
                         </div>
-
-                        <div class="mb-3">
-                            <label for="phone_number" class="form-label">Phone Number</label>
-                            <input type="tel" class="form-control" id="phone_number" name="phone_number" required>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
                         </div>
-
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="username" name="username" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
-
                         <h4 class="mt-4 mb-3">Location Information (Optional)</h4>
-                        
-                        <div class="mb-3">
-                            <label for="county" class="form-label">County</label>
-                            <select class="form-select" id="county" name="county">
-                                <option value="">Select County</option>
-                                {% for county in counties %}
-                                    <option value="{{ county.id }}">{{ county.name }}</option>
-                                {% endfor %}
-                            </select>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="county" class="form-label">County</label>
+                                <select class="form-select" id="county" name="county">
+                                    <option value="">Select County</option>
+                                    {% for county in counties %}
+                                        <option value="{{ county.id }}">{{ county.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="constituency" class="form-label">Constituency</label>
+                                <select class="form-select" id="constituency" name="constituency">
+                                    <option value="">Select Constituency</option>
+                                </select>
+                            </div>
                         </div>
-
-                        <div class="mb-3">
-                            <label for="constituency" class="form-label">Constituency</label>
-                            <select class="form-select" id="constituency" name="constituency">
-                                <option value="">Select Constituency</option>
-                            </select>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="ward" class="form-label">Ward</label>
+                                <select class="form-select" id="ward" name="ward">
+                                    <option value="">Select Ward</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="polling_center" class="form-label">Polling Center</label>
+                                <select class="form-select" id="polling_center" name="polling_center">
+                                    <option value="">Select Polling Center</option>
+                                </select>
+                            </div>
                         </div>
-
-                        <div class="mb-3">
-                            <label for="ward" class="form-label">Ward</label>
-                            <select class="form-select" id="ward" name="ward">
-                                <option value="">Select Ward</option>
-                            </select>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label for="polling_station" class="form-label">Polling Station</label>
+                                <select class="form-select" id="polling_station" name="polling_station">
+                                    <option value="">Select Polling Station</option>
+                                </select>
+                            </div>
                         </div>
-
-                        <div class="mb-3">
-                            <label for="polling_center" class="form-label">Polling Center</label>
-                            <select class="form-select" id="polling_center" name="polling_center">
-                                <option value="">Select Polling Center</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="polling_station" class="form-label">Polling Station</label>
-                            <select class="form-select" id="polling_station" name="polling_station">
-                                <option value="">Select Polling Station</option>
-                            </select>
-                        </div>
-
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary">Register</button>
                         </div>

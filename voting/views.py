@@ -11,6 +11,7 @@ from .models import (
 )
 from django.db.models.functions import TruncDate
 from django.utils import timezone
+import re
 
 def is_admin_user(user):
     return user.is_staff
@@ -35,6 +36,16 @@ def register(request):
         ward_id = request.POST.get('ward')
         polling_center_id = request.POST.get('polling_center')
         polling_station_id = request.POST.get('polling_station')
+
+        # Validate ID number: exactly 8 digits
+        if not re.fullmatch(r'\d{8}', id_number or ''):
+            messages.error(request, 'ID number must be exactly 8 digits (numbers only).')
+            return redirect('voting:register')
+
+        # Validate phone number: +2547XXXXXXXX
+        if not re.fullmatch(r'\+2547\d{8}', phone_number or ''):
+            messages.error(request, 'Phone number must be in the format +2547XXXXXXXX (e.g., +254712345678).')
+            return redirect('voting:register')
         
         # Check if ID number already exists
         if Voter.objects.filter(id_number=id_number).exists():

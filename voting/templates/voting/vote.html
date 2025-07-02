@@ -36,13 +36,70 @@
                                                 {% endif %}
                                             </p>
                                             <div class="text-center">
-                                                <a href="{% url 'voting:confirm_vote' candidate.id position.name %}" class="btn btn-primary">
-                                                    Vote for {{ candidate.user.get_full_name }}
-                                                </a>
+                                                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#candidateModal{{ candidate.id }}">
+                                                    View Info
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- Candidate Info Modal -->
+                                <div class="modal fade" id="candidateModal{{ candidate.id }}" tabindex="-1" aria-labelledby="candidateModalLabel{{ candidate.id }}" aria-hidden="true">
+                                  <div class="modal-dialog modal-lg modal-dialog-centered">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="candidateModalLabel{{ candidate.id }}">Candidate Information</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                      </div>
+                                      <div class="modal-body">
+                                        <div class="row">
+                                          <div class="col-md-4 text-center">
+                                            {% if candidate.photo %}
+                                              <img src="{{ candidate.photo.url }}" class="img-fluid rounded mb-3" alt="{{ candidate.user.get_full_name }}">
+                                            {% else %}
+                                              <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                                <i class="fas fa-user fa-4x text-muted"></i>
+                                              </div>
+                                            {% endif %}
+                                            <h5 class="mt-2">{{ candidate.user.get_full_name }}</h5>
+                                            <p><strong>Party:</strong> {{ candidate.party.name }}</p>
+                                            {% if candidate.party.logo %}
+                                              <img src="{{ candidate.party.logo.url }}" alt="{{ candidate.party.name }}" style="width: 40px; height: 40px; object-fit: contain;">
+                                            {% endif %}
+                                          </div>
+                                          <div class="col-md-8">
+                                            <p><strong>Region:</strong>
+                                              {% if position.name == 'GOVERNOR' or position.name == 'SENATOR' or position.name == 'WOMEN_REP' %}
+                                                {{ candidate.county.name }}
+                                              {% elif position.name == 'MP' %}
+                                                {{ candidate.constituency.name }}
+                                              {% elif position.name == 'MCA' %}
+                                                {{ candidate.ward.name }}
+                                              {% endif %}
+                                            </p>
+                                            {% if candidate.bio %}
+                                              <p><strong>Bio:</strong> {{ candidate.bio }}</p>
+                                            {% endif %}
+                                            {% if candidate.manifesto %}
+                                              <p><strong>Manifesto:</strong> {{ candidate.manifesto }}</p>
+                                            {% endif %}
+                                            {% if candidate.party.description %}
+                                              <p><strong>Party Description:</strong> {{ candidate.party.description }}</p>
+                                            {% endif %}
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <a href="{% url 'voting:confirm_vote' candidate.id position.name %}" class="btn btn-primary">
+                                          Vote for {{ candidate.user.get_full_name }}
+                                        </a>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <!-- End Modal -->
                             {% endfor %}
                         </div>
                     {% else %}

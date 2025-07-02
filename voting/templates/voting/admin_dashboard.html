@@ -3,13 +3,19 @@
 {% block title %}Admin Dashboard{% endblock %}
 
 {% block content %}
+<style>
+    .bg-iebc-green {
+        background-color: #43b02a !important;
+        color: #fff !important;
+    }
+</style>
 <div class="container py-4">
     <h1 class="mb-4">Admin Dashboard</h1>
     
     <!-- Statistics Cards -->
     <div class="row mb-4">
         <div class="col-md-4">
-            <div class="card bg-primary text-white">
+            <div class="card bg-iebc-green text-white">
                 <div class="card-body">
                     <h5 class="card-title">Total Voters</h5>
                     <h2 class="card-text">{{ total_voters }}</h2>
@@ -17,7 +23,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card bg-success text-white">
+            <div class="card bg-iebc-green text-white">
                 <div class="card-body">
                     <h5 class="card-title">Total Votes Cast</h5>
                     <h2 class="card-text">{{ total_votes }}</h2>
@@ -25,7 +31,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card bg-info text-white">
+            <div class="card bg-iebc-green text-white">
                 <div class="card-body">
                     <h5 class="card-title">Total Candidates</h5>
                     <h2 class="card-text">{{ total_candidates }}</h2>
@@ -75,7 +81,6 @@
                         <tr>
                             <th>Voter</th>
                             <th>Position</th>
-                            <th>Candidate</th>
                             <th>Time</th>
                         </tr>
                     </thead>
@@ -84,7 +89,6 @@
                         <tr>
                             <td>{{ vote.voter.user.get_full_name }}</td>
                             <td>{{ vote.position.get_name_display }}</td>
-                            <td>{{ vote.candidate.user.get_full_name }}</td>
                             <td>{{ vote.timestamp|date:"M d, Y H:i" }}</td>
                         </tr>
                         {% endfor %}

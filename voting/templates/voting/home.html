@@ -3,12 +3,74 @@
 {% block title %}Welcome to Kenya Online Voting System{% endblock %}
 
 {% block content %}
-<div class="container py-5">
+<style>
+    body {
+        background: linear-gradient(135deg, #43b02a 0%, #ffffff 100%) !important;
+        min-height: 100vh;
+    }
+    .iebc-logo {
+        width: 80px;
+        height: 80px;
+        background: #43b02a;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px auto;
+        box-shadow: 0 4px 16px rgba(67, 176, 42, 0.2);
+    }
+    .iebc-logo i {
+        color: #fff;
+        font-size: 2.5rem;
+    }
+    .fade-in {
+        animation: fadeIn 1.2s ease-in;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .btn-primary, .btn-outline-primary {
+        background-color: #43b02a !important;
+        border-color: #43b02a !important;
+        color: #fff !important;
+        transition: background 0.3s, color 0.3s;
+    }
+    .btn-outline-primary {
+        background: #fff !important;
+        color: #43b02a !important;
+    }
+    .btn-primary:hover, .btn-outline-primary:hover {
+        background-color: #000 !important;
+        color: #fff !important;
+        border-color: #000 !important;
+    }
+    .card {
+        border-radius: 1rem;
+        box-shadow: 0 2px 12px rgba(67, 176, 42, 0.08);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+        transform: translateY(-8px) scale(1.03);
+        box-shadow: 0 8px 24px rgba(67, 176, 42, 0.18);
+    }
+    .feature-icon {
+        color: #43b02a !important;
+        transition: color 0.2s;
+    }
+    .card:hover .feature-icon {
+        color: #000 !important;
+    }
+</style>
+<div class="container py-5 fade-in">
     <div class="row justify-content-center">
         <div class="col-md-8 text-center">
-            <h1 class="display-4 mb-4">Welcome to Kenya Online Voting System</h1>
-            <p class="lead mb-5">A secure and convenient way to cast your vote</p>
-            
+            <div class="iebc-logo mb-3">
+                <i class="fas fa-vote-yea"></i>
+            </div>
+            <h1 class="display-4 mb-2">Welcome to Kenya Online Voting System</h1>
+            <p class="lead mb-3">A secure and convenient way to cast your vote</p>
+            <p class="mb-4" style="font-size:1.2rem;color:#43b02a;font-weight:500;">Your vote, your voice, your future.</p>
             {% if user.is_authenticated %}
                 {% if user.is_staff %}
                     <a href="{% url 'voting:admin_dashboard' %}" class="btn btn-primary btn-lg me-3">Admin Dashboard</a>
@@ -29,7 +91,7 @@
         <div class="col-md-4">
             <div class="card h-100">
                 <div class="card-body text-center">
-                    <i class="fas fa-shield-alt fa-3x mb-3 text-primary"></i>
+                    <i class="fas fa-shield-alt fa-3x mb-3 feature-icon"></i>
                     <h3 class="card-title">Secure Voting</h3>
                     <p class="card-text">Your vote is protected with advanced security measures and encryption.</p>
                 </div>
@@ -38,7 +100,7 @@
         <div class="col-md-4">
             <div class="card h-100">
                 <div class="card-body text-center">
-                    <i class="fas fa-mobile-alt fa-3x mb-3 text-primary"></i>
+                    <i class="fas fa-mobile-alt fa-3x mb-3 feature-icon"></i>
                     <h3 class="card-title">Easy Access</h3>
                     <p class="card-text">Vote from anywhere using your computer or mobile device.</p>
                 </div>
@@ -47,7 +109,7 @@
         <div class="col-md-4">
             <div class="card h-100">
                 <div class="card-body text-center">
-                    <i class="fas fa-chart-bar fa-3x mb-3 text-primary"></i>
+                    <i class="fas fa-chart-bar fa-3x mb-3 feature-icon"></i>
                     <h3 class="card-title">Real-time Results</h3>
                     <p class="card-text">View election results as they come in, in real-time.</p>
                 </div>
