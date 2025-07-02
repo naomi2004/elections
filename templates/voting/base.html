@@ -11,44 +11,74 @@
     <!-- Custom CSS -->
     <style>
         :root {
-            --iebc-green: #1B5E20;
-            --iebc-yellow: #FFD700;
-            --iebc-green-light: #2E7D32;
-            --iebc-yellow-light: #FFE54C;
+            --iebc-green: #43b02a;
+            --iebc-white: #ffffff;
+            --iebc-black: #000000;
+        }
+
+        body {
+            background-color: var(--iebc-white);
+            color: var(--iebc-black);
+        }
+
+        .navbar, .footer, .card-header {
+            background-color: var(--iebc-green) !important;
+            color: var(--iebc-white) !important;
+        }
+
+        .navbar-brand, .nav-link {
+            color: var(--iebc-white) !important;
+        }
+
+        .nav-link:hover {
+            color: var(--iebc-black) !important;
+        }
+
+        .btn-primary, .page-item.active .page-link {
+            background-color: var(--iebc-green) !important;
+            border-color: var(--iebc-green) !important;
+            color: var(--iebc-white) !important;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--iebc-black) !important;
+            border-color: var(--iebc-black) !important;
+            color: var(--iebc-white) !important;
+        }
+
+        .btn-secondary {
+            background-color: var(--iebc-white) !important;
+            border-color: var(--iebc-green) !important;
+            color: var(--iebc-green) !important;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--iebc-green) !important;
+            border-color: var(--iebc-green) !important;
+            color: var(--iebc-white) !important;
+        }
+
+        .alert-success, .alert-warning, .alert-danger {
+            background-color: var(--iebc-green) !important;
+            color: var(--iebc-white) !important;
+            border-color: var(--iebc-green) !important;
+        }
+
+        .card {
+            border-color: var(--iebc-green) !important;
+        }
+
+        .page-link {
+            color: var(--iebc-green) !important;
+        }
+
+        .form-control:focus {
+            border-color: var(--iebc-green) !important;
+            box-shadow: 0 0 0 0.25rem rgba(67, 176, 42, 0.25);
         }
 
         .navbar-brand img {
             height: 40px;
-        }
-
-        .navbar-dark {
-            background-color: var(--iebc-green) !important;
-        }
-
-        .nav-link:hover {
-            color: var(--iebc-yellow) !important;
-        }
-
-        .btn-primary {
-            background-color: var(--iebc-green);
-            border-color: var(--iebc-green);
-        }
-
-        .btn-primary:hover {
-            background-color: var(--iebc-green-light);
-            border-color: var(--iebc-green-light);
-        }
-
-        .btn-secondary {
-            background-color: var(--iebc-yellow);
-            border-color: var(--iebc-yellow);
-            color: var(--iebc-green);
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--iebc-yellow-light);
-            border-color: var(--iebc-yellow-light);
-            color: var(--iebc-green);
         }
 
         .hero-section {
@@ -66,35 +96,6 @@
             position: relative;
             bottom: 0;
             width: 100%;
-        }
-
-        .alert-success {
-            background-color: var(--iebc-green-light);
-            border-color: var(--iebc-green);
-            color: white;
-        }
-
-        .card {
-            border-color: var(--iebc-green);
-        }
-
-        .card-header {
-            background-color: var(--iebc-green);
-            color: white;
-        }
-
-        .page-link {
-            color: var(--iebc-green);
-        }
-
-        .page-item.active .page-link {
-            background-color: var(--iebc-green);
-            border-color: var(--iebc-green);
-        }
-
-        .form-control:focus {
-            border-color: var(--iebc-green);
-            box-shadow: 0 0 0 0.25rem rgba(27, 94, 32, 0.25);
         }
     </style>
     {% block extra_css %}{% endblock %}
